@@ -1,4 +1,4 @@
-// JQLite Verison 1.0.0
+// JQLite Verison 1.2.0
 // Author: Phantom0
 
 namespace JQL {
@@ -19,7 +19,7 @@ namespace JQL {
     callback: object
   ): void => {
     if (Array.isArray(selector)) {
-      selector.forEach((e) => e.addEventListener(event, callback));
+      selector.forEach((e: any) => e.addEventListener(event, callback));
     } else if (typeof selector == "string") {
       querySelector(selector).addEventListener(event, callback);
     } else {
@@ -28,13 +28,13 @@ namespace JQL {
   };
 
   export const element = (options: {
-    elementToCreate: string;
+    element: string;
     classList?: string[];
     id?: string;
     count?: number;
     parent?: string;
   }): object | any => {
-    let { elementToCreate, classList, id, count, parent } = options;
+    let { element, classList, id, count, parent } = options;
     let wrapper = parent
       ? document.createElement(parent)
       : document.createElement("div");
@@ -44,7 +44,7 @@ namespace JQL {
     let iter = 0;
 
     do {
-      let e = document.createElement(elementToCreate);
+      let e = document.createElement(element);
 
       classList ? classList.forEach((cn) => e.classList.add(cn)) : null;
       id ? (e.id = id) : null;
@@ -85,21 +85,23 @@ namespace JQL {
     }
   };
 
-  export const jinx = (
-    options: { url: string, type?: string; data?: FormData }
-  ) => {
-    const { url, type, data } = options;
+  export const jinx = async (
+    url: string,
+    type?: string,
+    config?: {}
+  ): Promise<any> => {
+    config = config ? config : { method: "GET" };
 
-    if (!type) {
+    const res = await fetch(url, config);
 
-    }
+    if (!res.ok)
+      throw new Error(
+        `There is an error with your config. Error Code: ${res.status}`
+      );
 
-    fetch(url, {
-      method: type,
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => clog(data));
+    const data = type == "json" ? res.json() : res.text();
+
+    return data;
   };
 }
 
@@ -109,8 +111,11 @@ const j = JQL;
 const jq = JQL.querySelector;
 const el = JQL.listener;
 const clog = JQL.clog;
+const convert = JQL.convert;
 const create = JQL.element;
 const attr = JQL.attr;
 const hasClass = JQL.hasClass;
 const hasID = JQL.hasID;
 const jinx = JQL.jinx;
+const text = JQL.text;
+const val = JQL.val;

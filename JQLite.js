@@ -1,5 +1,5 @@
 "use strict";
-// JQLite Verison 1.0.0
+// JQLite Verison 1.2.0
 // Author: Phantom0
 var JQL;
 (function (JQL) {
@@ -21,14 +21,14 @@ var JQL;
         }
     };
     JQL.element = (options) => {
-        let { elementToCreate, classList, id, count, parent } = options;
+        let { element, classList, id, count, parent } = options;
         let wrapper = parent
             ? document.createElement(parent)
             : document.createElement("div");
         count = count ? count : 1;
         let iter = 0;
         do {
-            let e = document.createElement(elementToCreate);
+            let e = document.createElement(element);
             classList ? classList.forEach((cn) => e.classList.add(cn)) : null;
             id ? (e.id = id) : null;
             wrapper.append(e);
@@ -51,16 +51,13 @@ var JQL;
             return element.getAttribute(attribute);
         }
     };
-    JQL.jinx = (options) => {
-        const { url, type, data } = options;
-        if (!type) {
-        }
-        fetch(url, {
-            method: type,
-            body: data,
-        })
-            .then((res) => res.json())
-            .then((data) => JQL.clog(data));
+    JQL.jinx = async (url, type, config) => {
+        config = config ? config : { method: "GET" };
+        const res = await fetch(url, config);
+        if (!res.ok)
+            throw new Error(`There is an error with your config. Error Code: ${res.status}`);
+        const data = type == "json" ? res.json() : res.text();
+        return data;
     };
 })(JQL || (JQL = {}));
 // instance an object for this object and few functions
@@ -69,8 +66,11 @@ const j = JQL;
 const jq = JQL.querySelector;
 const el = JQL.listener;
 const clog = JQL.clog;
+const convert = JQL.convert;
 const create = JQL.element;
 const attr = JQL.attr;
 const hasClass = JQL.hasClass;
 const hasID = JQL.hasID;
 const jinx = JQL.jinx;
+const text = JQL.text;
+const val = JQL.val;
