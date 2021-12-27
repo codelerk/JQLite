@@ -1,2 +1,4 @@
-index.html
+*.html
 JQLite-webserver/
+*.php
+*.css
