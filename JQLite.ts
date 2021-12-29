@@ -1,4 +1,4 @@
-// JQLite Verison 1.8.1
+// JQLite Verison 1.8.3
 // Author: Phantom0
 
 namespace JQL {
@@ -7,13 +7,13 @@ namespace JQL {
     collection: NodeListOf<Element> | HTMLCollectionOf<Element>
   ): any[] => [...collection];
 
-  export const querySelector = (selector: string): any | any[] => {
+  export const querySelect = (selector: string): any | any[] => {
     let e = convert(document.querySelectorAll(selector));
 
     return e.length == 1 ? e[0] : e;
   };
 
-  export const listener = (
+  export const listen = (
     selector: any | any[],
     event: string,
     callback: object
@@ -21,7 +21,7 @@ namespace JQL {
     if (Array.isArray(selector)) {
       selector.forEach((e: any) => e.addEventListener(event, callback));
     } else if (typeof selector == "string") {
-      listener(querySelector(selector), event, callback);
+      listen(querySelect(selector), event, callback);
     } else {
       selector.addEventListener(event, callback);
     }
@@ -74,26 +74,15 @@ namespace JQL {
     if (parent) {
       return wrapper;
     } else {
-      let container = convert(wrapper.children);
+      let children = convert(wrapper.children);
 
-      return container.length == 1 ? container[0] : container;
+      return children.length == 1 ? children[0] : children;
     }
   };
 
-  export const text = (element: any, text?: string): void | string => {
-    if (Array.isArray(element)) {
-      element.forEach(item => text ? (item.innerText = text) : item.innerText);
-    } else {
-      text ? (element.innerText = text) : element.innerText
-    }
-  };
+  export const uniqueArray = (array: any[]): any[] => [...new Set(array)];
 
-  export const val = (element: any, value?: string): void | string =>
-    value ? (element.value = value) : element.value;
-
-  export const unique_array = (array: any[]): any[] => [...new Set(array)];
-
-  export const clog = (log: any | any[]): void => console.log(log);
+  export const log = (log: any | any[]): void => console.log(log);
 
   export const hasClass = (element: any, containedClass: string): boolean =>
     element.classList.contains(containedClass);
@@ -106,7 +95,7 @@ namespace JQL {
     attribute: string,
     value?: string
   ): void | string => {
-    element = typeof element === "string" ? querySelector(element) : element;
+    element = typeof element === "string" ? querySelect(element) : element;
     if (value) {
       element.setAttribute(attribute, value);
     } else {
@@ -160,14 +149,11 @@ namespace JQL {
 // instance an object for this object and few functions
 // you may change these if you like! or remove them and just call the library from j or JQL
 const j = JQL;
-const jq = JQL.querySelector;
-const el = JQL.listener;
-const clog = JQL.clog;
+const jq = JQL.querySelect;
+const el = JQL.listen;
 const convert = JQL.convert;
 const create = JQL.element;
 const attr = JQL.attr;
 const hasClass = JQL.hasClass;
 const hasID = JQL.hasID;
 const jinx = JQL.jinx;
-const text = JQL.text;
-const val = JQL.val;

@@ -1,20 +1,20 @@
 "use strict";
-// JQLite Verison 1.8.1
+// JQLite Verison 1.8.3
 // Author: Phantom0
 var JQL;
 (function (JQL) {
     // auto convert node and html collections
     JQL.convert = (collection) => [...collection];
-    JQL.querySelector = (selector) => {
+    JQL.querySelect = (selector) => {
         let e = JQL.convert(document.querySelectorAll(selector));
         return e.length == 1 ? e[0] : e;
     };
-    JQL.listener = (selector, event, callback) => {
+    JQL.listen = (selector, event, callback) => {
         if (Array.isArray(selector)) {
             selector.forEach((e) => e.addEventListener(event, callback));
         }
         else if (typeof selector == "string") {
-            JQL.listener(JQL.querySelector(selector), event, callback);
+            JQL.listen(JQL.querySelect(selector), event, callback);
         }
         else {
             selector.addEventListener(event, callback);
@@ -53,25 +53,16 @@ var JQL;
             return wrapper;
         }
         else {
-            let container = JQL.convert(wrapper.children);
-            return container.length == 1 ? container[0] : container;
+            let children = JQL.convert(wrapper.children);
+            return children.length == 1 ? children[0] : children;
         }
     };
-    JQL.text = (element, text) => {
-        if (Array.isArray(element)) {
-            element.forEach(item => text ? (item.innerText = text) : item.innerText);
-        }
-        else {
-            text ? (element.innerText = text) : element.innerText;
-        }
-    };
-    JQL.val = (element, value) => value ? (element.value = value) : element.value;
-    JQL.unique_array = (array) => [...new Set(array)];
-    JQL.clog = (log) => console.log(log);
+    JQL.uniqueArray = (array) => [...new Set(array)];
+    JQL.log = (log) => console.log(log);
     JQL.hasClass = (element, containedClass) => element.classList.contains(containedClass);
     JQL.hasID = (element, containedID) => element.id.includes(containedID);
     JQL.attr = (element, attribute, value) => {
-        element = typeof element === "string" ? JQL.querySelector(element) : element;
+        element = typeof element === "string" ? JQL.querySelect(element) : element;
         if (value) {
             element.setAttribute(attribute, value);
         }
@@ -112,14 +103,11 @@ var JQL;
 // instance an object for this object and few functions
 // you may change these if you like! or remove them and just call the library from j or JQL
 const j = JQL;
-const jq = JQL.querySelector;
-const el = JQL.listener;
-const clog = JQL.clog;
+const jq = JQL.querySelect;
+const el = JQL.listen;
 const convert = JQL.convert;
 const create = JQL.element;
 const attr = JQL.attr;
 const hasClass = JQL.hasClass;
 const hasID = JQL.hasID;
 const jinx = JQL.jinx;
-const text = JQL.text;
-const val = JQL.val;
