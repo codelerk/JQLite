@@ -4,4 +4,4 @@ JQLite is a Javascript framework built to be a light weight, and allow you to do
 
 just add this to the top of all your scripts at the bottom of your page folder 
 
-> https://cdn.jsdelivr.net/gh/codelerk/JQLite@main/JQLite.js
+> https://cdn.jsdelivr.net/gh/codelerk/JQLite@1.1.6/JQLite.js
