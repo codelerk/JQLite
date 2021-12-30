@@ -1,5 +1,5 @@
 "use strict";
-// JQLite Verison 1.8.3
+// JQLite Verison 1.1.6
 // Author: Phantom0
 var JQL;
 (function (JQL) {
@@ -97,7 +97,8 @@ var JQL;
         const res = config ? await fetch(url, config) : await fetch(url);
         if (!res.ok)
             throw new Error(`There is an error with your config. Please check your config. Error Code: ${res.status}`);
-        return res;
+        const rdata = await res.text();
+        return rdata;
     };
 })(JQL || (JQL = {}));
 // instance an object for this object and few functions

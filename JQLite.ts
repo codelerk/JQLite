@@ -1,4 +1,4 @@
-// JQLite Verison 1.8.3
+// JQLite Verison 1.1.6
 // Author: Phantom0
 
 namespace JQL {
@@ -142,7 +142,9 @@ namespace JQL {
         `There is an error with your config. Please check your config. Error Code: ${res.status}`
       );
 
-    return res;
+      const rdata = await res.text();
+
+    return rdata;
   };
 }
 
