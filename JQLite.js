@@ -5,7 +5,7 @@ var JQL;
 (function (JQL) {
     // auto convert node and html collections
     JQL.convert = (collection) => [...collection];
-    JQL.querySelect = (selector) => {
+    JQL.select = (selector) => {
         let e = JQL.convert(document.querySelectorAll(selector));
         return e.length == 1 ? e[0] : e;
     };
@@ -14,13 +14,13 @@ var JQL;
             selector.forEach((e) => e.addEventListener(event, callback));
         }
         else if (typeof selector == "string") {
-            JQL.listen(JQL.querySelect(selector), event, callback);
+            JQL.listen(JQL.select(selector), event, callback);
         }
         else {
             selector.addEventListener(event, callback);
         }
     };
-    JQL.element = (element, parent, count) => {
+    JQL.create = (element, parent, count) => {
         let classList;
         let id = null;
         if (element.includes('#')) {
@@ -38,7 +38,7 @@ var JQL;
             classList = elementSplit;
         }
         let wrapper = parent
-            ? create(parent)
+            ? JQL.create(parent)
             : document.createElement("div");
         count = count ? count : 1;
         let iter = 0;
@@ -62,7 +62,7 @@ var JQL;
     JQL.hasClass = (element, containedClass) => element.classList.contains(containedClass);
     JQL.hasID = (element, containedID) => element.id.includes(containedID);
     JQL.attr = (element, attribute, value) => {
-        element = typeof element === "string" ? JQL.querySelect(element) : element;
+        element = typeof element === "string" ? JQL.select(element) : element;
         if (value) {
             element.setAttribute(attribute, value);
         }
@@ -101,14 +101,4 @@ var JQL;
         return rdata;
     };
 })(JQL || (JQL = {}));
-// instance an object for this object and few functions
-// you may change these if you like! or remove them and just call the library from j or JQL
-const j = JQL;
-const jq = JQL.querySelect;
-const el = JQL.listen;
-const convert = JQL.convert;
-const create = JQL.element;
-const attr = JQL.attr;
-const hasClass = JQL.hasClass;
-const hasID = JQL.hasID;
-const jinx = JQL.jinx;
+const $ = JQL;
