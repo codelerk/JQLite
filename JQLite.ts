@@ -1,4 +1,4 @@
-// JQLite Verison 1.1.6
+// JQLite Verison 1.1.8
 // Author: Phantom0
 
 namespace JQL {
@@ -7,7 +7,7 @@ namespace JQL {
     collection: NodeListOf<Element> | HTMLCollectionOf<Element>
   ): any[] => [...collection];
 
-  export const querySelect = (selector: string): any | any[] => {
+  export const select = (selector: string): any | any[] => {
     let e = convert(document.querySelectorAll(selector));
 
     return e.length == 1 ? e[0] : e;
@@ -21,13 +21,13 @@ namespace JQL {
     if (Array.isArray(selector)) {
       selector.forEach((e: any) => e.addEventListener(event, callback));
     } else if (typeof selector == "string") {
-      listen(querySelect(selector), event, callback);
+      listen(select(selector), event, callback);
     } else {
       selector.addEventListener(event, callback);
     }
   };
 
-  export const element = (element: string, parent?: string, count?: number): object | any => {
+  export const create = (element: string, parent?: string, count?: number): object | any => {
     let classList: string[];
     let id = null;
 
@@ -95,7 +95,7 @@ namespace JQL {
     attribute: string,
     value?: string
   ): void | string => {
-    element = typeof element === "string" ? querySelect(element) : element;
+    element = typeof element === "string" ? select(element) : element;
     if (value) {
       element.setAttribute(attribute, value);
     } else {
@@ -148,14 +148,4 @@ namespace JQL {
   };
 }
 
-// instance an object for this object and few functions
-// you may change these if you like! or remove them and just call the library from j or JQL
-const j = JQL;
-const jq = JQL.querySelect;
-const el = JQL.listen;
-const convert = JQL.convert;
-const create = JQL.element;
-const attr = JQL.attr;
-const hasClass = JQL.hasClass;
-const hasID = JQL.hasID;
-const jinx = JQL.jinx;
+const $ = JQL;
