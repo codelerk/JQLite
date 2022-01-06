@@ -1,4 +1,4 @@
-// JQLite Verison 1.1.8
+// JQLite Verison 1.2.1
 // Author: Phantom0
 
 namespace JQL {
@@ -16,27 +16,32 @@ namespace JQL {
   export const listen = (
     selector: any | any[],
     event: string,
-    callback: object
+    callback: object,
+    config?: object
   ): void => {
     if (Array.isArray(selector)) {
-      selector.forEach((e: any) => e.addEventListener(event, callback));
+      selector.forEach((e: any) => e.addEventListener(event, callback, config));
     } else if (typeof selector == "string") {
-      listen(select(selector), event, callback);
+      listen(select(selector), event, callback, config);
     } else {
-      selector.addEventListener(event, callback);
+      selector.addEventListener(event, callback, config);
     }
   };
 
-  export const create = (element: string, parent?: string, count?: number): object | any => {
+  export const create = (
+    element: string,
+    parent?: string,
+    count?: number
+  ): object | any => {
     let classList: string[];
     let id = null;
 
-    if (element.includes('#')) {
-      let elementSplit: string[] = element.split('#');
+    if (element.includes("#")) {
+      let elementSplit: string[] = element.split("#");
 
       element = elementSplit[0];
 
-      let splitID: string[] = elementSplit[1].split('.');
+      let splitID: string[] = elementSplit[1].split(".");
 
       id = splitID[0];
 
@@ -44,7 +49,7 @@ namespace JQL {
 
       classList = splitID;
     } else {
-      let elementSplit: string[] = element.split('.');
+      let elementSplit: string[] = element.split(".");
 
       element = elementSplit[0];
       elementSplit.shift();
@@ -52,9 +57,7 @@ namespace JQL {
       classList = elementSplit;
     }
 
-    let wrapper = parent
-      ? create(parent)
-      : document.createElement("div");
+    let wrapper = parent ? create(parent) : document.createElement("div");
 
     count = count ? count : 1;
 
@@ -142,10 +145,11 @@ namespace JQL {
         `There is an error with your config. Please check your config. Error Code: ${res.status}`
       );
 
-      const rdata = await res.text();
+    const rdata = await res.text();
 
     return rdata;
   };
 }
 
 const $ = JQL;
+

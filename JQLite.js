@@ -1,5 +1,5 @@
 "use strict";
-// JQLite Verison 1.1.8
+// JQLite Verison 1.2.1
 // Author: Phantom0
 var JQL;
 (function (JQL) {
@@ -9,37 +9,35 @@ var JQL;
         let e = JQL.convert(document.querySelectorAll(selector));
         return e.length == 1 ? e[0] : e;
     };
-    JQL.listen = (selector, event, callback) => {
+    JQL.listen = (selector, event, callback, config) => {
         if (Array.isArray(selector)) {
-            selector.forEach((e) => e.addEventListener(event, callback));
+            selector.forEach((e) => e.addEventListener(event, callback, config));
         }
         else if (typeof selector == "string") {
-            JQL.listen(JQL.select(selector), event, callback);
+            JQL.listen(JQL.select(selector), event, callback, config);
         }
         else {
-            selector.addEventListener(event, callback);
+            selector.addEventListener(event, callback, config);
         }
     };
     JQL.create = (element, parent, count) => {
         let classList;
         let id = null;
-        if (element.includes('#')) {
-            let elementSplit = element.split('#');
+        if (element.includes("#")) {
+            let elementSplit = element.split("#");
             element = elementSplit[0];
-            let splitID = elementSplit[1].split('.');
+            let splitID = elementSplit[1].split(".");
             id = splitID[0];
             splitID.shift();
             classList = splitID;
         }
         else {
-            let elementSplit = element.split('.');
+            let elementSplit = element.split(".");
             element = elementSplit[0];
             elementSplit.shift();
             classList = elementSplit;
         }
-        let wrapper = parent
-            ? JQL.create(parent)
-            : document.createElement("div");
+        let wrapper = parent ? JQL.create(parent) : document.createElement("div");
         count = count ? count : 1;
         let iter = 0;
         do {
