@@ -5,3 +5,7 @@ JQLite is a Javascript framework built to be a light weight, and allow you to do
 just add this to the top of all your scripts at the bottom of your page folder 
 
 > https://cdn.jsdelivr.net/gh/codelerk/JQLite@v1.2.1/JQLite.js
+
+If the above does not work then import this link.
+
+> https://raw.githubusercontent.com/codelerk/JQLite/v1.2.1/JQLite.js
