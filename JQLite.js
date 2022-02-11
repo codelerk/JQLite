@@ -99,4 +99,3 @@ var JQL;
         return rdata;
     };
 })(JQL || (JQL = {}));
-const $ = JQL;
